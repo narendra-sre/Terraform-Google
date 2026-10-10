@@ -39,3 +39,8 @@ module "storage" {
   bucket_name = var.bucket_name
   location    = var.location
 }
+
+module "load-balancer" {
+  source            = "../../modules/load-balancer"
+  instance_group_id = module.compute.instance_group_id
+}

@@ -17,3 +17,7 @@ output "bucket_name" {
 output "bucket_url" {
   value = module.storage.bucket_url
 }
+
+output "load_balancer_ip" {
+  value = module.load-balancer.load_balancer_ip
+}

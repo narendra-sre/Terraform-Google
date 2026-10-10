@@ -8,6 +8,7 @@ resource "google_compute_instance" "web_instances" {
       image = "debian-cloud/debian-12"
     }
   }
+  tags = ["lb-backend"]
   network_interface {
     network    = var.network_id
     subnetwork = var.subnet_id
@@ -22,7 +23,7 @@ resource "google_compute_instance" "web_instances" {
   apt-get update -y
   apt-get install -y nginx
   systemctl enable nginx
-  systemctl restart nginx
+  systemctl start nginx
   echo "<h1>Hello from Backend VM: $(hostname)</h1>" > /var/www/html/index.html
   EOF
 }
