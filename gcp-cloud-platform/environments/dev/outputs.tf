@@ -21,3 +21,11 @@ output "bucket_url" {
 output "load_balancer_ip" {
   value = module.load-balancer.load_balancer_ip
 }
+
+output "database_name" {
+  value = module.database.database_name
+}
+
+output "database_user" {
+  value = module.database.database_user
+}

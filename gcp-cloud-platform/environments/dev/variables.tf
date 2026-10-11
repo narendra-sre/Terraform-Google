@@ -32,3 +32,13 @@ variable "location" {
   description = "Location of Storage bucket"
   default     = "asia-south1"
 }
+
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "alert_email" {
+  description = "Email for alerting"
+  type        = string
+}

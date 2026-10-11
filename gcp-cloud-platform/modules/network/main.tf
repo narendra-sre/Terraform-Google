@@ -10,6 +10,16 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
   project       = var.project_id
   region        = var.region
   network       = google_compute_network.vpc_network.id
+
+  secondary_ip_range {
+    range_name    = "gke-pods"
+    ip_cidr_range = "10.30.0.0/16"
+  }
+
+  secondary_ip_range {
+    range_name    = "gke-services"
+    ip_cidr_range = "10.40.0.0/20"
+  }
 }
 
 resource "google_compute_router" "nat_router" {
@@ -42,4 +52,20 @@ resource "google_compute_firewall" "allow_lb_health_check" {
     "130.211.0.0/22"
   ]
   target_tags = ["lb-backend"]
+}
+
+resource "google_compute_global_address" "gloabl_address" {
+  name          = var.private_ip_range_name
+  project       = var.project_id
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.vpc_network.id
+  address       = "10.20.0.0"
+}
+
+resource "google_service_networking_connection" "global_address_connection" {
+  network                 = google_compute_network.vpc_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.gloabl_address.name]
 }
