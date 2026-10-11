@@ -1,0 +1,44 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    name: Terraform Validate and Plan
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: environmentsd/dev
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_idenitity_provider: ${{ var.GCP_WIF_PROVIDER }}
+          service_account: ${{ var.GCP_TERRAFORM_SA }}
+
+      - name: Setup Terraform
+        run: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Initialize Terraform
+        run: terraform init -input=false
+      
+      - name: Terraform validate
+        run: terraform validate
+      
+      - name: Terraform Plan
+        run: terraform plan -input=false -no-color
