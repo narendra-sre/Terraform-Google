@@ -1,4 +1,8 @@
 terraform {
+  backend "gcs" {
+    bucket = "project-dca5b643-1729-421e-831-terraform-state"
+    prefix = "gcp-cloud-platform/dev"
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"
