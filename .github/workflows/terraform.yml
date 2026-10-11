@@ -25,8 +25,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_idenitity_provider: ${{ var.GCP_WIF_PROVIDER }}
-          service_account: ${{ var.GCP_TERRAFORM_SA }}
+          workload_idenitity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_TERRAFORM_SA }}
 
       - name: Setup Terraform
         run: hashicorp/setup-terraform@v3
